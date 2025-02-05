@@ -4,7 +4,7 @@ import Budget from "../models/Budget";
 
 export const validateId = async (req: Request, res: Response, next: NextFunction) => {
     
-    await param('id')
+    await param('budgetId')
         .isInt()
             .withMessage('ID no válido')
         .custom( value => value > 0 )
@@ -31,15 +31,15 @@ declare global {
 
 export const validateBudgetExists = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const id = req.params.id!
-        const budget = await Budget.findByPk(id)
+        const { budgetId } = req.params
+        const budget = await Budget.findByPk(budgetId)
 
         if(!budget) {
             const error = new Error('El presupuesto no a sido encontrado')
             res.status(404).json({error: error.message})
             return
         }
-        
+
         req.budget = budget
 
     } catch (error) {
