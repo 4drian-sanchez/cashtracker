@@ -1,7 +1,7 @@
-import 'dotenv/config'
 import express from 'express' 
 import colors from 'colors'
 import morgan from 'morgan'
+import budgerRoutes from './routes/BudgetRoutes'
 import db from './config/db'
 
 const connectDB = async () => {
@@ -22,6 +22,6 @@ app.use(morgan('dev'))
 
 app.use(express.json())
 
-
+app.use( '/api/budgets', budgerRoutes)
 
 export default app
