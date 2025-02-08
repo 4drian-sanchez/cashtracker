@@ -2,6 +2,7 @@ import express from 'express'
 import colors from 'colors'
 import morgan from 'morgan'
 import budgerRoutes from './routes/BudgetRoutes'
+import AuthRoutes from './routes/AuthRoutes'
 import db from './config/db'
 
 const connectDB = async () => {
@@ -23,5 +24,6 @@ app.use(morgan('dev'))
 app.use(express.json())
 
 app.use( '/api/budgets', budgerRoutes)
+app.use( '/api/auth', AuthRoutes)
 
 export default app
