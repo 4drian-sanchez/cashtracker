@@ -4,6 +4,7 @@ import { checkPassword, hashPassword } from "../utils/bcrypt";
 import { generateToken } from "../utils/token";
 import AuthEmail from "../emails/AuthEmail";
 import { generateJWT } from "../utils/jwt";
+import jwt from 'jsonwebtoken'
 
 class AuthController {
 
@@ -134,6 +135,54 @@ class AuthController {
         await user.save()
         res.status(200).json('Cambia restablacida correctamente')
     }
+
+    static getUser =  async (req: Request, res: Response) => {
+        res.status(200).json(req.user)
+    }
+
+    static updateCurrentUserPassword =  async (req: Request, res: Response) => {
+        const {current_password, password} = req.body
+        const user = await User.findByPk(req.user.id)
+
+        if(!user) {
+            const error = new Error('El usuario no existe')
+            res.status(404).json({error: error.message})
+            return
+        }
+
+        const isPasswordCorrect = await checkPassword(current_password, user.password)
+        if(!isPasswordCorrect) {
+            const error = new Error('Contraseña incorrecta')
+            res.status(404).json({error: error.message})
+            return
+        }
+
+        user.password = await hashPassword(password)
+        await user.save()
+        res.json('Contraseña actualizaada correctamente')
+    }
+    
+
+    static checkPassword =  async (req: Request, res: Response) => {
+        const {password} = req.body
+        const user = await User.findByPk(req.user.id)
+
+        if(!user) {
+            const error = new Error('El usuario no existe')
+            res.status(404).json({error: error.message})
+            return
+        }
+
+        const isPasswordCorrect = await checkPassword(password, user.password)
+        if(!isPasswordCorrect) {
+            const error = new Error('Contraseña incorrecta')
+            res.status(404).json({error: error.message})
+            return
+        }
+
+        res.json('La contraseña es correcta')
+    }
+    
 }
 
 export default AuthController
