@@ -9,8 +9,10 @@ class BudgetController {
             const budgets = await Budget.findAll({
                 order: [
                     ['createdAt', 'DESC']
-                    //TODO: Filtrar bodgets por usuario
-                ]
+                ],
+                where: {
+                    userId: req.user.id
+                }
             })
             res.status(200).json(budgets)
         } catch (error) {
@@ -21,9 +23,10 @@ class BudgetController {
 
     static create = async (req: Request, res: Response) => {
         try {
-            const budget = new Budget(req.body)
+            const budget = await Budget.create(req.body)
+            budget.userId = req.user.id
             await budget.save()
-            res.status(201).send('Presupuesto creado correctamente')
+            res.status(201).json('Presupuesto creado correctamente')
             
         } catch (error) {
             //console.log(error)
@@ -40,12 +43,12 @@ class BudgetController {
 
     static updateById = async (req: Request, res: Response) => {
         await req.budget.update(req.body)
-        res.status(200).send('Presupuesto actualizado correctamente')
+        res.status(200).json('Presupuesto actualizado correctamente')
     }
 
     static deleteById = async (req: Request, res: Response) => {
         await req.budget.destroy()
-        res.status(200).send('Presupuesto Eliminado')
+        res.status(200).json('Presupuesto Eliminado')
     }
 }
 

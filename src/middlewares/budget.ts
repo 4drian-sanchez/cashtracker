@@ -39,14 +39,11 @@ export const validateBudgetExists = async (req: Request, res: Response, next: Ne
             res.status(404).json({error: error.message})
             return
         }
-
         req.budget = budget
-
+        next()
     } catch (error) {
         //console.log(error)
         res.status(500).json({error: 'Hubo un error'})
-    }finally {
-        next()
     }
 }
 
@@ -64,4 +61,13 @@ export const validateBudgetsInput = async (req: Request, res: Response, next: Ne
 
     next()
 
+}
+
+export const hasAccess = async (req: Request, res: Response, next: NextFunction) => {
+    if(req.budget.userId !== req.user.id) {
+        const error = new Error('No tienes acceso para esta acción')
+        res.status(401).json({error: error.message})
+        return
+    }
+    next()
 }
