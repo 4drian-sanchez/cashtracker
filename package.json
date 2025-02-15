@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "backend de cashTrackr",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -10,9 +10,8 @@
     "test": "jest"
   },
   "keywords": [],
-  "author": "",
+  "author": "Adrian xanberg",
   "license": "ISC",
-  "type": "commonjs",
   "description": "",
   "dependencies": {
     "bcrypt": "^5.1.1",

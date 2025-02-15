@@ -1,20 +1,11 @@
 import express from 'express' 
-import colors from 'colors'
 import morgan from 'morgan'
 import budgerRoutes from './routes/BudgetRoutes'
 import AuthRoutes from './routes/AuthRoutes'
-import db from './config/db'
+import connectDB from './config/db'
+import 'dotenv/config'
 
-const connectDB = async () => {
-    try {
-        await db.authenticate()
-        db.sync()
-        console.log(colors.cyan.bold('base de datos conectada'))
-    } catch (error) {
-        //console.log(error)
-        console.log(colors.cyan.bold('Falló la conexión a la datos conectada'))
-    }
-}
+//Conexion a la base de datos
 connectDB()
 
 const app = express()
