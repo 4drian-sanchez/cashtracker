@@ -58,11 +58,10 @@ export const validateExpenseExists = async (req: Request, res: Response, next: N
         }
 
         req.expense = expense
+        next()
 
     } catch (error) {
         //console.log(error)
         res.status(500).json({error: 'Hubo un error'})
-    }finally {
-        next()
     }
 }
