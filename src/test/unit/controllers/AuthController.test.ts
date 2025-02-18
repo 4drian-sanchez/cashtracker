@@ -66,7 +66,7 @@ describe('AuthController.createAccount', () => {
             email: req.body.email,
             token: '123456',
         })
-        expect(res.statusCode).toBe(200)
+        expect(res.statusCode).toBe(201)
     })
 })
 

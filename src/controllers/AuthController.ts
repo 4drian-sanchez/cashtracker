@@ -18,11 +18,16 @@ class AuthController {
             res.status(409).json({ error: error.message })
             return
         }
-
+        
         try {
             const user = await User.create(req.body)
             user.password = await hashPassword(password)
-            user.token = generateToken()
+            const token = generateToken()
+            user.token = token
+
+            if(process.env.NODE_ENV !== 'production') {
+                globalThis.cashTrackrConfirmationToken = token
+            }
 
             await AuthEmail.emailConfirmationAccount({
                 name: user.name,
@@ -31,7 +36,7 @@ class AuthController {
             })
 
             await user.save()
-            res.json('usuario creado correctamente')
+            res.status(201).json('usuario creado correctamente')
 
         } catch (error) {
             console.log(error)

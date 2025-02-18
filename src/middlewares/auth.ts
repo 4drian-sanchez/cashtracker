@@ -28,9 +28,9 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
             req.user = user
         }
 
+        next()
+        
     } catch (error) {
         res.status(500).json(error.message)
-    }finally {
-        next()
     }
 }
