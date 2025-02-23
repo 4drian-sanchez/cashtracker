@@ -121,7 +121,7 @@ class AuthController {
             res.status(404).json({error: error.message})
             return
         }
-        res.json('el token existe!!!')
+        res.json('¡Ingresa tu nueva contraeña!')
     }
 
     static changePasswordWithToken = async (req: Request, res: Response) => {
@@ -130,7 +130,7 @@ class AuthController {
 
         const user = await User.findOne({where: {token}})
         if(!user) {
-            const error = new Error('El token no es válido')
+            const error = new Error('Tu contraseña ha sido actualizada correctamente. Ahora puedes acceder a tu cuenta con tu nueva contraseña')
             res.status(404).json({error: error.message})
             return
         }
