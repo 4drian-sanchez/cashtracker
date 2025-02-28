@@ -7,6 +7,7 @@ class BudgetController {
     static getAll = async (req: Request, res: Response) => {
         try {
             const budgets = await Budget.findAll({
+                include: [Expense],
                 order: [
                     ['createdAt', 'DESC']
                 ],
